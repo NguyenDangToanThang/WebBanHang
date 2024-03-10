@@ -29,6 +29,13 @@ public class User {
         this.fullname = fullname;
         this.avatar = avatar;
     }
+    public User(Long id, String email, String password, String role, String fullname) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.fullname = fullname;
+    }
 
     public User(Long id, String email, String password, String role, String fullname, String avatar) {
         this.id = id;

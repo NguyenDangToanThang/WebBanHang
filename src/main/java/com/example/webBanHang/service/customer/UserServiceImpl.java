@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public void update(User user) {
         if (userRepository.existsById(user.getId()) && user.getId() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
         }
     }

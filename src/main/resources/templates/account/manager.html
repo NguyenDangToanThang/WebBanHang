@@ -77,7 +77,7 @@
                     <td th:text="${user.password}"></td>
                     <td>
                         <a th:href="@{'/admin-page/account/detail/' + ${user.id}}" class="btn btn-outline-primary">Xem chi tiết</a>
-                        <a href="#" class="btn btn-outline-primary">Cập nhật</a>
+                        <a th:href="@{'/admin-page/account/update/' + ${user.id}}" class="btn btn-outline-primary">Cập nhật</a>
                     </td>
                 </tr>
                 </tbody>
