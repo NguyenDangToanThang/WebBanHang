@@ -2,6 +2,9 @@ package com.example.webBanHang.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
@@ -13,6 +16,10 @@ public class User {
     private String role;
     private String fullname;
     private String avatar;
+
+    @OneToMany(mappedBy = "user")
+    Set<Card> cardSet = new HashSet<Card>();
+
     public User() {}
 
     public User(String email, String password, String role, String fullname) {

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -58,6 +59,7 @@ public class ProductController {
             Product product = new Product();
             product.setName(productDTO.getName());
             product.setPrice(productDTO.getPrice());
+            product.setQuantity(productDTO.getQuantity());
             product.setDescription(productDTO.getDescription());
             product.setImage((String) upload(productDTO).get("secure_url"));
 
@@ -77,22 +79,25 @@ public class ProductController {
     public String updateProduct(
             @ModelAttribute ProductDto productDto,
             Model model ,
-            @RequestParam("id") Long id,
-            @RequestParam(value = "imagePathOld", required = false) String imagePathOld
+            @RequestParam("id") Long id
     ) {
 
         Product product = new Product();
         product.setId(id);
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
         product.setDescription(productDto.getDescription());
 
+        Optional<Product> product_old = productService.getProductById(product.getId());
         if(productDto.getImage().isEmpty()) {
-            product.setImage(imagePathOld);
+            product.setImage(product_old.get().getImage());
         }
         else {
             try{
                 product.setImage((String) upload(productDto).get("secure_url"));
+                String publicId = extractPublicIdFromUrl(product_old.get().getImage());
+                cloudinary.uploader().destroy(publicId,ObjectUtils.emptyMap());
             }catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,5 +112,24 @@ public class ProductController {
         productService.delete(id);
         model.addAttribute("message", "Product deleted successfully");
         return "redirect:/admin-page";
+    }
+
+    public static String extractPublicIdFromUrl(String url) {
+        try {
+            String[] parts = url.split("/");
+            int publicIdIndex = 7;
+            String publicId = parts[publicIdIndex];
+
+            if (publicId.startsWith("v")) {
+                publicId = publicId.substring(1);
+            }
+            if (publicId.contains(".")) {
+                publicId = publicId.substring(0, publicId.indexOf("."));
+            }
+            return publicId;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Invalid URL format: " + url);
+            return null;
+        }
     }
 }

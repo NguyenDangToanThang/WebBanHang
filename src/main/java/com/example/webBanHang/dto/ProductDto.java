@@ -6,16 +6,25 @@ public class ProductDto {
     private String name;
     private double price;
     private String description;
+    private int quantity;
     private MultipartFile image;
 
-    public ProductDto() {
-    }
+    public ProductDto() {}
 
-    public ProductDto(String name, double price, String description, MultipartFile image) {
+    public ProductDto(String name, double price, String description, MultipartFile image, int quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.image = image;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getName() {

@@ -2,6 +2,9 @@ package com.example.webBanHang.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -10,22 +13,36 @@ public class Product {
     private Long id;
     private String name;
     private double price;
+    private int quantity;
     private String description;
     private String image;
 
-    public Product(Long id, String name, double price, String description, String image) {
+    @OneToMany(mappedBy = "product")
+    Set<Card> cardSet = new HashSet<Card>();
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Product(Long id, String name, double price, String description, String image, int quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.image = image;
+        this.quantity = quantity;
     }
 
-    public Product(String name, double price, String description, String image) {
+    public Product(String name, double price, String description, String image, int quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.image = image;
+        this.quantity = quantity;
     }
 
     public Product() {
