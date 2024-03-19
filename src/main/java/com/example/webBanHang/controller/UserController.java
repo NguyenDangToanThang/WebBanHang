@@ -2,14 +2,12 @@ package com.example.webBanHang.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.webBanHang.dto.ProductDto;
 import com.example.webBanHang.dto.UserDto;
 import com.example.webBanHang.model.User;
 import com.example.webBanHang.service.customer.UserService;
 import com.example.webBanHang.service.product.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -18,7 +18,7 @@ public class Product {
     private String image;
 
     @OneToMany(mappedBy = "product")
-    Set<Card> cardSet = new HashSet<Card>();
+    Set<Cart> cardSet = new HashSet<Cart>();
 
     public int getQuantity() {
         return quantity;

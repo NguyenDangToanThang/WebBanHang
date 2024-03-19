@@ -33,7 +33,7 @@
                         <ul class="dropdown-menu">
                             <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                             <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
-                            <li><a class="dropdown-item" href="#">Giỏ hàng</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user-page/cart}">Giỏ hàng</a></li>
                         </ul>
                     </div>
                 </form>
@@ -71,8 +71,8 @@
                         <img th:src="${product.image}" width="100" height="100" alt="Hình ảnh sản phẩm"/>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-outline-primary">Thêm vào giỏ</a>
-                        <a href="#" class="btn btn-outline-primary">Mua ngay</a>
+                        <a th:href="@{'/user-page/addToCart/' + ${product.id}}" class="btn btn-outline-primary">Thêm vào giỏ</a>
+<!--                        <a href="#" class="btn btn-outline-primary">Mua ngay</a>-->
                     </td>
                 </tr>
                 </tbody>

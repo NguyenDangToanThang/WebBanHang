@@ -18,7 +18,7 @@ public class User {
     private String avatar;
 
     @OneToMany(mappedBy = "user")
-    Set<Card> cardSet = new HashSet<Card>();
+    Set<Cart> cardSet = new HashSet<Cart>();
 
     public User() {}
 

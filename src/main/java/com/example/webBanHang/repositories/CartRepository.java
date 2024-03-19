@@ -1,7 +1,10 @@
 package com.example.webBanHang.repositories;
 
-import com.example.webBanHang.model.Card;
+import com.example.webBanHang.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CartRepository extends JpaRepository<Card , Long> {
+import java.util.List;
+
+public interface CartRepository extends JpaRepository<Cart, Long> {
+    List<Cart> findByUserId(Long customerId);
 }
