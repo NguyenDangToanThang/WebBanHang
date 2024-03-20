@@ -59,11 +59,14 @@
                     <th>Giá</th>
                     <th>Mô tả</th>
                     <th>Ảnh</th>
+                    <th>Số lượng</th>
                     <th>Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}">
+                <tr th:each="product : ${products}" th:attr="id=${'editModal' + product.id}">
+                    <form th:action="@{'/user-page/addToCart/' + ${product.id}}" method="post" enctype="multipart/form-data">
+
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.price}"></td>
                     <td th:text="${product.description}"></td>
@@ -71,16 +74,19 @@
                         <img th:src="${product.image}" width="100" height="100" alt="Hình ảnh sản phẩm"/>
                     </td>
                     <td>
-                        <a th:href="@{'/user-page/addToCart/' + ${product.id}}" class="btn btn-outline-primary">Thêm vào giỏ</a>
-<!--                        <a href="#" class="btn btn-outline-primary">Mua ngay</a>-->
+                        <input type="number" value="1" min="1" max="99" maxlength="2" class="form-control" name="quantity_cart" id="quantity_cart">
                     </td>
+                    <td>
+                            <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                    </td>
+                    </form>
+
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

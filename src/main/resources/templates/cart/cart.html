@@ -28,19 +28,25 @@
                 <tr>
                     <th>ID</th>
                     <th>Tên sản phẩm</th>
+                    <th>Giá</th>
                     <th>Số lượng</th>
-                    <th>Tổng tiền</th>
+                    <th>Thành tiền</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="cart : ${carts}">
                     <td th:text="${cart.id}"></td>
                     <td th:text="${cart.product.name}"></td>
+                    <td th:text="${cart.product.price} + ' VND'"></td>
                     <td th:text="${cart.quantity_cart}"></td>
-                    <td></td>
+                    <td th:text="${cart.quantity_cart * cart.product.price} + ' VND'"></td>
+                </tr>
+                <tr>
+                    <span>Tổng thanh toán: <strong th:text="${total} + ' VND'"></strong></span>
                 </tr>
                 </tbody>
             </table>
+            <button type="submit" class="btn btn-primary">Đặt hàng</button>
         </div>
     </div>
 </div>
