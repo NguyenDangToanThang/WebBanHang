@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin-page").hasAuthority("ADMIN")
                         .requestMatchers("/user-page", "/user-page/*").hasAuthority("USER")
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/forgot_password", "/reset_password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

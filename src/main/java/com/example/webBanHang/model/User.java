@@ -17,6 +17,17 @@ public class User {
     private String fullname;
     private String avatar;
 
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @OneToMany(mappedBy = "user")
     Set<Cart> cardSet = new HashSet<Cart>();
 
