@@ -10,6 +10,6 @@ public interface CartService {
     List<Cart> getAllProductInCarts(String username);
     void addToCart(Cart cart);
     void updateQuantityToCart(Product product,User user, Cart cart);
-    void pay();
     double total(List<Cart> carts);
+    void delete(Product product,User user);
 }

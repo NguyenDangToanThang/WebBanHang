@@ -7,12 +7,15 @@ import com.example.webBanHang.model.Product;
 import com.example.webBanHang.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +24,8 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Autowired
     private Cloudinary cloudinary;
 
@@ -32,13 +37,17 @@ public class ProductController {
 
     @Secured("ADMIN")
     @GetMapping("/admin-page/products/add")
-    public String getProduct(Model model){
+    public String getProduct(Model model, Principal principal){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        model.addAttribute("user",userDetails);
         model.addAttribute("product", new Product());
         return "product/add";
     }
     @Secured("ADMIN")
     @GetMapping("/admin-page/products/update/{id}")
-    public String getUpdateProduct(@PathVariable Long id , Model model){
+    public String getUpdateProduct(@PathVariable Long id , Model model,Principal principal){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        model.addAttribute("user",userDetails);
         Optional<Product> product = productService.getProductById(id);
         model.addAttribute("product",product);
         return "product/update";
@@ -46,10 +55,10 @@ public class ProductController {
 
     @Secured("ADMIN")
     @PostMapping("/admin-page/products/add")
-    public String addProduct(@ModelAttribute("product") ProductDto productDTO, Model model) {
-
+    public String addProduct(@ModelAttribute("product") ProductDto productDTO, Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        model.addAttribute("user",userDetails);
         MultipartFile image = productDTO.getImage();
-
         if (image.isEmpty()) {
             model.addAttribute("message", "No image selected");
             return "product/add";

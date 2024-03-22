@@ -40,10 +40,10 @@ public class CartServiceImpl implements CartService{
     @Override
     public void updateQuantityToCart(Product product, User user, Cart cart) {
         Cart cart1 = cartRepository.findByUserIdAndProductId(user.getId(), product.getId());
-        System.out.println("Đây là thông báo được in ra console");
-        System.out.println(user.getId());
-        System.out.println(product.getId());
-        System.out.println(cart1);
+//        System.out.println("Đây là thông báo được in ra console");
+//        System.out.println(user.getId());
+//        System.out.println(product.getId());
+//        System.out.println(cart1);
         if(cart1 != null) {
             Long id = cart1.getId();
             if(cartRepository.existsById(id)){
@@ -54,16 +54,18 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public void pay() {
-    }
-
-    @Override
     public double total(List<Cart> carts) {
         double sum = 0;
         for(Cart cart : carts) {
             sum += cart.getQuantity_cart()*cart.getProduct().getPrice();
         }
         return sum;
+    }
+
+    @Override
+    public void delete(Product product, User user) {
+        Cart cart1 = cartRepository.findByUserIdAndProductId(user.getId(), product.getId());
+        cartRepository.delete(cart1);
     }
 
 

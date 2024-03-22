@@ -40,6 +40,47 @@ public class UserController {
         return r;
     }
 
+    @GetMapping("/user-page/profile")
+    public String profile(Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user" , user);
+        return "profile";
+    }
+    @PostMapping("/user-page/profile/update")
+    public String updateProfile(
+            @ModelAttribute UserDto userDto,
+            Model model,
+            Principal principal) throws IOException {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        User existingUser = userService.findByUsername(userDetails.getUsername());
+        User user = new User();
+        user.setId(existingUser.getId());
+        user.setEmail(userDto.getEmail());
+        if(!existingUser.getPassword().equals(userDto.getPassword()))
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(existingUser.getPassword());
+        user.setRole(userDto.getRole());
+        user.setFullname(userDto.getFullname());
+
+        if(!userDto.getAvatar().isEmpty()) {
+            if(existingUser.getAvatar() != null) {
+                String publicId = extractPublicIdFromUrl(existingUser.getAvatar());
+                Map result = cloudinary.uploader().destroy(publicId,ObjectUtils.emptyMap());
+                if(result.get("result").equals("ok"))
+                    user.setAvatar((String) upload(userDto).get("secure_url"));
+            }
+            user.setAvatar((String) upload(userDto).get("secure_url"));
+
+        } else {
+            user.setAvatar(existingUser.getAvatar());
+        }
+        userService.update(user);
+        model.addAttribute("user", user);
+        model.addAttribute("message", "Thông tin đã cập nhật thành công");
+        return "profile";
+    }
+
     @GetMapping("/register")
     public String getRegistrationPage(@ModelAttribute("user") UserDto userDto){
         return "login/register";
@@ -97,6 +138,7 @@ public class UserController {
         model.addAttribute("account", userService.findById(id));
         return "account/update";
     }
+
     @Secured("ADMIN")
     @PostMapping("/account/update")
     public String account_update(@ModelAttribute UserDto userDto,

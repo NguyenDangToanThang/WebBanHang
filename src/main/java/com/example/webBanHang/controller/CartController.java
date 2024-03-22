@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,6 +29,30 @@ public class CartController {
     private UserService userService;
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/user-page/cart/order")
+    public String order(Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        List<Cart> carts = cartService.getAllProductInCarts(userDetails.getUsername());
+       if(!carts.isEmpty()) {
+           for (Cart cart : carts) {
+               Long id = cart.getProduct().getId();
+               int quantity = cart.getProduct().getQuantity() - cart.getQuantity_cart();
+               if(quantity < 0) {
+                   String message = "sản phẩm " + cart.getProduct().getName() + " đã hết hàng!";
+                   model.addAttribute("message" , message);
+               } else {
+                   Optional<Product> product = productService.getProductById(id);
+                   User user = userService.findByUsername(userDetails.getUsername());
+                   product.get().setQuantity(quantity);
+                   productService.update(product.get());
+                   cartService.delete(product.get(), user);
+               }
+           }
+       }
+       return "redirect:/user-page/cart";
+    }
+
     @GetMapping("/user-page/cart")
     public String cart(Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
@@ -56,8 +81,7 @@ public class CartController {
             AtomicInteger temp = new AtomicInteger(quantity_cart);
             carts.forEach((cart1) -> {
                 if (Objects.equals(cart1.getProduct().getName(),product.getName())) {
-                    cart1.getProduct().setQuantity(temp.get() + cart1.getQuantity_cart());
-                    cart.setQuantity_cart(cart1.getProduct().getQuantity());
+                    cart.setQuantity_cart(temp.get() + cart1.getQuantity_cart());
                     temp.set(cart1.getQuantity_cart());
                     check.set(true);
                 }
@@ -65,6 +89,7 @@ public class CartController {
             if(!check.get()) {
                 cart.setQuantity_cart(quantity_cart);
             }
+            System.out.println(product.getQuantity());
             cart.setProduct(product);
             cart.setUser(user);
             if(check.get()){
