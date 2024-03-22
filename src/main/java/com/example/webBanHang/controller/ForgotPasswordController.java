@@ -31,7 +31,7 @@ public class ForgotPasswordController {
 
     @GetMapping("/forgot_password")
     public String showForgotPasswordForm() {
-        return "forgot_password_form";
+        return "login/forgot_password_form";
     }
 
     @PostMapping("/forgot_password")
@@ -50,7 +50,7 @@ public class ForgotPasswordController {
             model.addAttribute("error", "Error while sending email.");
         }
 
-        return "forgot_password_form";
+        return "login/forgot_password_form";
     }
 
     public void sendEmail(String email, String resetPasswordLink) throws MessagingException, UnsupportedEncodingException {
@@ -62,11 +62,11 @@ public class ForgotPasswordController {
 
         String subject = "Here's the link to reset your password";
 
-        String content = "<p> Hello, </p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password: </p>"
-                + "<p><b><a href=\"" + resetPasswordLink + "\"> Change my password </a><b></p>"
-                + "<p>Ignore this email if you do remember your password, or you have not made the request </p>";
+        String content = "<p> Xin chào, </p>"
+                + "<p>Bạn có 1 yêu cầu làm mới mật khẩu.</p>"
+                + "<p>Ấn vào đường dẫn bên dưới để thay đổi mật khẩu của bạn </p>"
+                + "<p><b><a href=\"" + resetPasswordLink + "\"> Đổi mật khẩu </a><b></p>"
+                + "<p>Hãy bỏ qua Email này nếu bạn đã nhớ ra mật khẩu của bạn hoặc không phải bạn </p>";
         helper.setSubject(subject);
         helper.setText(content, true);
 
@@ -80,11 +80,11 @@ public class ForgotPasswordController {
         model.addAttribute("token", token);
 
         if (user == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
+            model.addAttribute("message", "Token không chính xác");
+            return "login/reset_password_form";
         }
 
-        return "reset_password_form";
+        return "login/reset_password_form";
     }
 
     @PostMapping("/reset_password")
@@ -93,16 +93,16 @@ public class ForgotPasswordController {
         String password = request.getParameter("password");
 
         User user = userService.getByResetPasswordToken(token);
-        model.addAttribute("title", "Reset your password");
+        model.addAttribute("title", "Làm mới mật khẩu của bạn");
 
         if (user == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "login";
+            model.addAttribute("message", "Token không chính xác");
+            return "login/reset_password_form";
         } else {
             userService.updatePassword(user, password);
-            model.addAttribute("message", "You have successfully changed your password.");
+            model.addAttribute("message", "Bạn đã đổi mật khẩu thành công");
         }
 
-        return "login";
+        return "login/login";
     }
 }

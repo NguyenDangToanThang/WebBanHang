@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String getRegistrationPage(@ModelAttribute("user") UserDto userDto){
-        return "register";
+        return "login/register";
     }
 
     @PostMapping("/register")
@@ -50,11 +50,11 @@ public class UserController {
         user.setRole("USER");
         userService.save(user);
         model.addAttribute("message", "Registered Successfully!!");
-        return "register";
+        return "login/register";
     }
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "login/login";
     }
     @GetMapping("/user-page")
     public String userPage (Model model, Principal principal) {
