@@ -7,8 +7,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.Random;
 
 @Controller
 public class ForgotPasswordController {
@@ -53,6 +49,7 @@ public class ForgotPasswordController {
         return "login/forgot_password_form";
     }
 
+    @SuppressWarnings("null")
     public void sendEmail(String email, String resetPasswordLink) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);

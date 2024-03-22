@@ -34,6 +34,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @SuppressWarnings("rawtypes")
     private Map upload(UserDto userDto) throws IOException {
         Map r = this.cloudinary.uploader().upload(userDto.getAvatar().getBytes(),
                 ObjectUtils.asMap("resource_type","auto"));
@@ -66,6 +67,7 @@ public class UserController {
         if(!userDto.getAvatar().isEmpty()) {
             if(existingUser.getAvatar() != null) {
                 String publicId = extractPublicIdFromUrl(existingUser.getAvatar());
+                @SuppressWarnings("rawtypes")
                 Map result = cloudinary.uploader().destroy(publicId,ObjectUtils.emptyMap());
                 if(result.get("result").equals("ok"))
                     user.setAvatar((String) upload(userDto).get("secure_url"));
@@ -160,6 +162,7 @@ public class UserController {
         if(!userDto.getAvatar().isEmpty()) {
             if(existingUser.get().getAvatar() != null) {
                 String publicId = extractPublicIdFromUrl(existingUser.get().getAvatar());
+                @SuppressWarnings("rawtypes")
                 Map result = cloudinary.uploader().destroy(publicId,ObjectUtils.emptyMap());
                 if(result.get("result").equals("ok"))
                     user.setAvatar((String) upload(userDto).get("secure_url"));

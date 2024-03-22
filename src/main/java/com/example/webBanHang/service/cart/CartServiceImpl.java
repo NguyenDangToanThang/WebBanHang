@@ -32,11 +32,13 @@ public class CartServiceImpl implements CartService{
         return cartRepository.findByUserId(user.getId());
     }
 
+    @SuppressWarnings("null")
     @Override
     public void addToCart(Cart cart) {
         cartRepository.save(cart);
     }
 
+    @SuppressWarnings("null")
     @Override
     public void updateQuantityToCart(Product product, User user, Cart cart) {
         Cart cart1 = cartRepository.findByUserIdAndProductId(user.getId(), product.getId());
@@ -62,6 +64,7 @@ public class CartServiceImpl implements CartService{
         return sum;
     }
 
+    @SuppressWarnings("null")
     @Override
     public void delete(Product product, User user) {
         Cart cart1 = cartRepository.findByUserIdAndProductId(user.getId(), product.getId());

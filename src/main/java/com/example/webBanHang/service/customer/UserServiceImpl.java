@@ -3,8 +3,6 @@ package com.example.webBanHang.service.customer;
 import com.example.webBanHang.model.User;
 import com.example.webBanHang.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +26,7 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user_mew);
     }
 
+    @SuppressWarnings("null")
     @Override
     public void update(User user) {
         if (userRepository.existsById(user.getId()) && user.getId() != null) {
@@ -40,6 +39,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);

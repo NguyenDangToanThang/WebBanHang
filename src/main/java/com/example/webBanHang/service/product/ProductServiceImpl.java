@@ -16,22 +16,26 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     @Override
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Product add(Product product) {
         return productRepository.save(product);
     }
 
+    @SuppressWarnings("null")
     @Override
     public void update(Product product) {
         if (product.getId() != null && productRepository.existsById(product.getId())) {
             productRepository.save(product);
         }
     }
+    @SuppressWarnings("null")
     @Override
     public void delete(Long id) {
         productRepository.deleteById(id);

@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -29,6 +28,7 @@ public class ProductController {
     @Autowired
     private Cloudinary cloudinary;
 
+    @SuppressWarnings("rawtypes")
     private Map upload(ProductDto productDto) throws IOException {
         Map r = this.cloudinary.uploader().upload(productDto.getImage().getBytes(),
                 ObjectUtils.asMap("resource_type","auto"));
