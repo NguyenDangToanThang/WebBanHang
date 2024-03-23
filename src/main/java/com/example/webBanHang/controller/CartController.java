@@ -1,8 +1,8 @@
 package com.example.webBanHang.controller;
 
-import com.example.webBanHang.model.Cart;
-import com.example.webBanHang.model.Product;
-import com.example.webBanHang.model.User;
+import com.example.webBanHang.model.*;
+import com.example.webBanHang.service.bill.BillService;
+import com.example.webBanHang.service.billDetail.BillDetailService;
 import com.example.webBanHang.service.cart.CartService;
 import com.example.webBanHang.service.customer.UserService;
 import com.example.webBanHang.service.product.ProductService;
@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,25 +32,38 @@ public class CartController {
     private UserService userService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private BillService billService;
+    @Autowired
+    private BillDetailService billDetailService;
 
     @GetMapping("/user-page/cart/order")
     public String order(Model model, Principal principal) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        User user = userService.findByUsername(userDetails.getUsername());
         List<Cart> carts = cartService.getAllProductInCarts(userDetails.getUsername());
        if(!carts.isEmpty()) {
+           Bill bill = new Bill();
+           LocalDateTime now = LocalDateTime.now();
+           String formattedTime = now.format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
+           bill.setDate(formattedTime);
+           bill.setTotal(cartService.total(carts));
+           bill.setUser(user);
+           billService.addToBill(bill);
+           List<Bill> bills = billService.getAllBill();
            for (Cart cart : carts) {
                Long id = cart.getProduct().getId();
                int quantity = cart.getProduct().getQuantity() - cart.getQuantity_cart();
-               if(quantity < 0) {
-                   String message = "sản phẩm " + cart.getProduct().getName() + " đã hết hàng!";
-                   model.addAttribute("message" , message);
-               } else {
-                   Optional<Product> product = productService.getProductById(id);
-                   User user = userService.findByUsername(userDetails.getUsername());
-                   product.get().setQuantity(quantity);
-                   productService.update(product.get());
-                   cartService.delete(product.get(), user);
-               }
+               Optional<Product> product = productService.getProductById(id);
+               product.get().setQuantity(quantity);
+               Bill_Detail billDetail = new Bill_Detail();
+               billDetail.setBill(bills.get(bills.size()-1));
+               billDetail.setPrice(product.get().getPrice());
+               billDetail.setName_product(product.get().getName());
+               billDetail.setQuantity(cart.getQuantity_cart());
+               billDetailService.addToBillDetail(billDetail);
+               productService.update(product.get());
+               cartService.delete(product.get(), user);
            }
        }
        return "redirect:/user-page/cart";

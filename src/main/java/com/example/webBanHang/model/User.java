@@ -31,6 +31,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     Set<Cart> cardSet = new HashSet<Cart>();
 
+    @OneToMany(mappedBy = "user")
+    Set<Bill> billSet = new HashSet<>();
+
     public User() {}
 
     public User(String email, String password, String role, String fullname) {
