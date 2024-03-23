@@ -3,6 +3,7 @@ package com.example.webBanHang.controller;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,31 @@ public class BillController {
         model.addAttribute("user" , user);
         model.addAttribute("bill_details", bill_Details);
         return "bill/bill_detail";
+    }
+    @Secured("ADMIN")
+    @GetMapping("/admin-page/bill-detail/{id}")
+    public String getBillDetailAdmin(@PathVariable("id") Long id, Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        User user = userService.findByUsername(userDetails.getUsername());
+        List<Bill_Detail> bill_Details = billDetailService.getBillDetailByBillId(id);
+        model.addAttribute("bill_id", id);
+        model.addAttribute("user" , user);
+        model.addAttribute("bill_details", bill_Details);
+        return "bill/bill_detail_admin";
+    }
+    @Secured("ADMIN")
+    @GetMapping("/admin-page/bill")
+    public String getAllBill(Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        User user = userService.findByUsername(userDetails.getUsername());
+        List<Bill> bills = billService.getAllBill();
+        model.addAttribute("user" , user);
+        if(bills.isEmpty()) {
+            model.addAttribute("message", "hiện tại Không có hóa đơn nào");
+            return "bill/bill_manager";
+        }
+        model.addAttribute("bills", bills);
+        return "bill/bill_manager";
     }
     
     

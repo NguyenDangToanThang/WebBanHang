@@ -1,21 +1,10 @@
-<!-- src/main/resources/templates/admin/dashboard.html -->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý hóa đơn</title>
+    <title>Hóa đơn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    h2 {
-      color: #333;
-    }
-  </style>
+
 </head>
 <body>
 <header class="header p-3">
@@ -28,13 +17,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" th:href="@{/admin-page}">Quản lí sản phẩm</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/admin-page}">Quản lí sản phẩm</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin-page/account}">Quản lí tài khoản</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin-page/bill}">Quản lí hóa đơn</a>
+                        <a class="nav-link" href="#">Quản lí hóa đơn</a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -51,42 +40,34 @@
         </div>
     </nav>
 </header>
-<div class="container-fluid mt-3">
+<div class="container mt-3">
     <div class="card">
         <div class="card-header">
-            <h2 class="text-center">Danh sách hóa đơn</h2>
-            <a class="btn btn-success btn-sm float-end" th:href="@{/admin-page}" >Trở về</a>
+            <h2 class="text-center">Chi tiết hóa đơn</h2>
+            <a th:href="@{/admin-page/bill}" class="btn btn-success btn-sm float-end">Trở về</a>
+            <span>Mã hóa đơn: <strong th:text="${bill_id}"></strong></span>
         </div>
-        <div th:if="${message != null}" class="alert alert-success" role="alert">
-            <p th:text="${message}"></p>
-        </div>
+        <div class="alert alert-danger" role="alert" th:if="${message != null}" th:text="${message}"></div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>ID hóa đơn</th>
-                    <th>Ngày đặt</th>
-                    <th>Tổng tiền</th>
-                    <th>Thao tác</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="bill : ${bills}">
-                    <td th:text="${bill.id}"></td>
-                    <td th:text="${bill.date}"></td>
-                    <td th:text="${bill.total}"></td>
-                    <td>
-                        <a class="btn btn-primary" th:href="@{'/admin-page/bill-detail/' + ${bill.id}}">Xem chi tiết</a>
-                    </td>
+                <tr th:each="bill : ${bill_details}">
+                    <td th:text="${bill.name_product}"></td>
+                    <td th:text="${bill.price}"></td>
+                    <td th:text="${bill.quantity}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
 </body>
 </html>
