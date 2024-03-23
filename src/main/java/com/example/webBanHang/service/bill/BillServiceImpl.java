@@ -12,11 +12,13 @@ import java.util.Optional;
 public class BillServiceImpl implements BillService{
     @Autowired
     private BillRepository billRepository;
+    @SuppressWarnings("null")
     @Override
     public void addToBill(Bill bill) {
         billRepository.save(bill);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Optional<Bill> getBillById(Long id) {
         return billRepository.findById(id);
@@ -25,5 +27,11 @@ public class BillServiceImpl implements BillService{
     @Override
     public List<Bill> getAllBill() {
         return billRepository.findAll();
+    }
+
+    @Override
+    public List<Bill> getAllBillByUserId(Long user_id) {
+        List<Bill> bills = billRepository.getBillByUserId(user_id);
+        return bills;
     }
 }

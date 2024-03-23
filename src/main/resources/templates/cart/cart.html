@@ -20,10 +20,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/user-page}">Trang chủ</a>
+                        <a class="nav-link" aria-current="page" th:href="@{/user-page}">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/user-page/cart}">Giỏ hàng</a>
+                        <a class="nav-link active" th:href="@{/user-page/cart}">Giỏ hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user-page/bill}">Hóa đơn</a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -35,8 +38,9 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
-                            <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user-page/profile}">Hồ sơ</a></li>
                             <li><a class="dropdown-item" th:href="@{/user-page/cart}">Giỏ hàng</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user-page/bill}">Hóa đơn</a></li>
                         </ul>
                     </div>
                 </form>

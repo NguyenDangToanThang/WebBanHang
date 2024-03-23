@@ -22,6 +22,9 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/user-page/cart}">Giỏ hàng</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user-page/bill}">Hóa đơn</a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <div class="dropdown">
@@ -34,6 +37,7 @@
                             <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                             <li><a class="dropdown-item" th:href="@{/user-page/profile}">Hồ sơ</a></li>
                             <li><a class="dropdown-item" th:href="@{/user-page/cart}">Giỏ hàng</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user-page/bill}">Hóa đơn</a></li>
                         </ul>
                     </div>
                 </form>

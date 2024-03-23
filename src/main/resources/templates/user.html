@@ -22,6 +22,9 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/user-page/cart}">Giỏ hàng</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/user-page/bill}">Hóa đơn</a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <div class="dropdown">
@@ -34,6 +37,7 @@
                             <li sec:authorize="isAuthenticated"><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                             <li><a class="dropdown-item" th:href="@{/user-page/profile}">Hồ sơ</a></li>
                             <li><a class="dropdown-item" th:href="@{/user-page/cart}">Giỏ hàng</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user-page/bill}">Hóa đơn</a></li>
                         </ul>
                     </div>
                 </form>
@@ -64,7 +68,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}" th:attr="id=${'editModal' + product.id}">
+                <tr th:each="product : ${products}">
                     <form th:action="@{'/user-page/addToCart/' + ${product.id}}" method="post" enctype="multipart/form-data">
 
                     <td th:text="${product.name}"></td>
@@ -78,7 +82,7 @@
                         <input type="number" value="1" min="1" max="99" maxlength="2" class="form-control" name="quantity_cart" id="quantity_cart">
                     </td>
                     <td>
-                            <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                        <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
                     </td>
                     </form>
 
